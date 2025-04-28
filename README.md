@@ -1,44 +1,24 @@
 # MCP Server
 
-Kurumsal ve genişletilebilir Multi-Model RAG + LLM platformu.
+## Yeni Özellikler
+- **OCR ve PDF İşleme:** Görüntülerden ve PDF dosyalarından metin çıkarabilirsiniz.
+- Yeni endpointler:
+  - `/process-image/`: Bir görüntü dosyasından metni çıkarır.
+  - `/process-pdf/`: Bir PDF dosyasından metni çıkarır.
 
-## Özellikler
+## Gereksinimler
+- **Tesseract OCR:** Sisteminizde kurulu olmalıdır.
+  - **Linux:** `sudo apt install tesseract-ocr`
+  - **Mac:** `brew install tesseract`
+  - **Windows:** Tesseract OCR [resmi dökümana](https://github.com/tesseract-ocr/tesseract) göre kurulmalıdır.
 
-- JWT Authentication & RBAC
-- Rate Limiting
-- Model cache ve fallback desteği
-- Singleton model yönetimi
-- Prometheus ile monitoring
-- Kullanıcı, rol ve tenant yönetimi API
-- Çoklu vektör backend desteği ve multi-tenancy (her tenant’a izole vektör-store)
-- Modern frontend (React + Ant Design)
-- Docker/Kubernetes ile kolay deployment
+## Kullanım
+1. **Görüntü İşleme:**
+   ```bash
+   curl -X POST "http://localhost:8000/process-image/" -F "file=@image.jpg"
+   ```
 
-## Hızlı Kurulum
-
-```bash
-git clone <repo-url>
-cd <repo>
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-python -c "from src.models.database import init_db; init_db()"
-uvicorn src.main:app --reload
-```
-
-## Docker
-
-```bash
-docker-compose up --build
-```
-
-## Kubernetes
-
-```bash
-kubectl apply -f k8s/
-```
-
-## Yol Haritası
-
-Daha fazla bilgi için [ROADMAP.md](ROADMAP.md) dosyasına bakın.
+2. **PDF İşleme:**
+   ```bash
+   curl -X POST "http://localhost:8000/process-pdf/" -F "file=@document.pdf"
+   ```

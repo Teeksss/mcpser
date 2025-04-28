@@ -1,6 +1,3 @@
-import io
-from src.services.rag.pdf_ocr_utils import pdf_to_texts, ocr_image
-
 async def process_file(file, ocr_lang="eng+tur"):
     filename = file.filename.lower()
     content = await file.read()
@@ -14,11 +11,3 @@ async def process_file(file, ocr_lang="eng+tur"):
     else:
         docs.append({"content": content.decode(), "metadata": {"filename": file.filename}})
     return docs
-
-def fetch_web_content(url):
-    import requests
-    from bs4 import BeautifulSoup
-    resp = requests.get(url)
-    soup = BeautifulSoup(resp.text, "html.parser")
-    for s in soup(["script", "style"]): s.decompose()
-    return soup.get_text(separator="\n", strip=True)

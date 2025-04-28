@@ -1,8 +1,12 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.responses import JSONResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+import os
+from PIL import Image
+import pytesseract
+from PyPDF2 import PdfReader
 
 from src.api.v1.endpoints import (
     auth,
@@ -36,6 +40,56 @@ async def log_requests(request: Request, call_next):
     response = await call_next(request)
     app_logger.info(f"Response: {response.status_code} {request.method} {request.url}")
     return response
+
+# OCR İşlevi
+def extract_text_from_image(image_path):
+    try:
+        image = Image.open(image_path)
+        text = pytesseract.image_to_string(image)
+        return text
+    except Exception as e:
+        return f"Error processing image: {e}"
+
+# PDF İşleme İşlevi
+def extract_text_from_pdf(pdf_path):
+    try:
+        reader = PdfReader(pdf_path)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text()
+        return text
+    except Exception as e:
+        return f"Error processing PDF: {e}"
+
+# OCR Endpoint
+@app.post("/api/v1/ocr/image")
+async def process_image(file: UploadFile = File(...)):
+    """
+    Görüntü dosyasını alır ve OCR ile metni çıkarır.
+    """
+    file_path = f"temp_{file.filename}"
+    with open(file_path, "wb") as f:
+        f.write(await file.read())
+    try:
+        text = extract_text_from_image(file_path)
+    finally:
+        os.remove(file_path)
+    return {"text": text}
+
+# PDF İşleme Endpoint
+@app.post("/api/v1/ocr/pdf")
+async def process_pdf(file: UploadFile = File(...)):
+    """
+    PDF dosyasını alır ve metni çıkarır.
+    """
+    file_path = f"temp_{file.filename}"
+    with open(file_path, "wb") as f:
+        f.write(await file.read())
+    try:
+        text = extract_text_from_pdf(file_path)
+    finally:
+        os.remove(file_path)
+    return {"text": text}
 
 # API Router kayıtları
 app.include_router(auth.router)
