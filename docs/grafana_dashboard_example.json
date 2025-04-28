@@ -1,0 +1,33 @@
+```json
+{
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "title": "Inference Response Time",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "inference_time_seconds",
+          "legendFormat": "{{model}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "title": "Active Users",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(increase(login_success[5m]))",
+          "refId": "B"
+        }
+      ]
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 36,
+  "version": 1
+}
+```

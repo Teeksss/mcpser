@@ -1,0 +1,12 @@
+body {
+  background: #f7f7f7;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+.ant-card {
+  margin-bottom: 24px;
+}

@@ -1,0 +1,1 @@
+# SQLAlchemy modellerini import için gereklidir.

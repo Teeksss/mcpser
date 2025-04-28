@@ -1,0 +1,6 @@
+# Eğer yarn ile kurulum yapılırsa otomatik üretilir.
+# Örnek kısa bir içerik:
+"@babel/code-frame@^7.0.0":
+  version "7.18.6"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz"
+  integrity sha512-VYp6A6nT+FqMT9K0tC9w+vkiB4cJ4b+uGtLwF0t0KkGk0gE8d9w5Z4U7JwPpQH3wXU4Gp4d4z4nkO+I5Z4n9VA==

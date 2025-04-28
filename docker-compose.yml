@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  mcpserver:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./db:/app/db
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    depends_on:
+      - chromadb
+      - redis
+  chromadb:
+    image: chromadb/chroma
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./chromadb-data:/chroma/.chroma/index
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
